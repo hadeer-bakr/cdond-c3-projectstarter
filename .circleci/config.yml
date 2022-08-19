@@ -373,8 +373,8 @@ jobs:
       - attach_workspace:
         at: ~/
       - run:
-         name: Saving the old WorkflowID to KVDB bucket
-          command: |
+        name: Saving the old WorkflowID to KVDB bucket
+        command: |
             export  OldWorkflowID="$(aws cloudformation \
                     list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                     --no-paginate --output text)"
