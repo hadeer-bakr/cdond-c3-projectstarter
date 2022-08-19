@@ -187,17 +187,17 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            BACKEND_IP=$(aws ec2 describe-instances \
+            IP=$(aws ec2 describe-instances \
             --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
-            echo $BACKEND_IP >> .circleci/ansible/inventory.txt
+            echo $IP >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment     
+      # - destroy-environment     
 
   configure-infrastructure:
     docker:
@@ -216,7 +216,7 @@ jobs:
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment     
+      # - destroy-environment     
 
   run-migrations:
     docker:
@@ -234,7 +234,7 @@ jobs:
               npm run build
               npm run migrations >> output.txt
               cat output.txt
-      - destroy-environment
+      # - destroy-environment
       - revert-migrations      
 
   deploy-frontend:
@@ -268,7 +268,7 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      - destroy-environment
+      # - destroy-environment
       - revert-migrations      
                     
   deploy-backend:
@@ -307,7 +307,7 @@ jobs:
             export TYPEORM_MIGRATIONS=./migrations/*.ts
             cd .circleci/ansible
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - destroy-environment
+      # - destroy-environment
       - revert-migrations
 
 #   smoke-test:
