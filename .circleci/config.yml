@@ -72,9 +72,9 @@ jobs:
       - image: cimg/node:13.8.0
     steps:
        - checkout
-      - restore_cache:
+       - restore_cache:
           keys: [frontend-build]
-      - run:
+       - run:
           name: Front-end test
           command: |
              cd frontend
@@ -87,9 +87,9 @@ jobs:
      - image: cimg/node:13.8.0
     steps:
        - checkout
-      - restore_cache:
+       - restore_cache:
           keys: [backend-build]
-      - run:
+       - run:
           name: Back-end test
           command: |
              cd backend
@@ -284,10 +284,10 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
       # - scan-backend:
       #     requires: [build-backend]
       # - scan-frontend:
