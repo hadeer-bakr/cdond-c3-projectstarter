@@ -242,10 +242,18 @@ jobs:
       - image: amazon/aws-cli 
     steps:
       - checkout
-      - awscli
-      - nodejs
+      - run:
+         name: Install dependencies
+         command: |
+           yum update -y
+           yum install -y tar gzip
+           yum install -y python3
+           curl -sL https://rpm.nodesource.com/setup_10.x |  bash -
+           yum install -y nodejs
+           pip3 install ansible
+           pip3 install awscli
       - restore_cache:
-          keys: [backend-build]
+          keys: [frontend-build]
       - run:
           name: Install dependencies
           command: |
