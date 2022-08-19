@@ -327,9 +327,9 @@ jobs:
             export API=http://${IP}:3030
             if curl -s ${API}/api/status | grep "ok"
             then 
-                return 0
+                exit 0
             else
-                return 1
+                exit 1
             fi
       - run:
           name: Frontend smoke test.
@@ -337,9 +337,9 @@ jobs:
             FRONTEND_TEST=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
             if curl -s $FRONTEND_TEST | grep "Welcome"
             then 
-                retorn 0
+                exit 0
             else
-                return 1
+                exit 1
             fi
       - destroy-environment
       - revert-migrations 
