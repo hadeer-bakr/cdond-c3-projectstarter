@@ -15,6 +15,26 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
             aws s3 rm s3://udapeople-<< parameters.Workflow_ID >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
+  ansible:
+    description: "Installs Ansible"
+    steps:
+      - run: 
+          name: "Install Ansible"
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+
+  awscli:
+    description: "Installs AWS_CLI"
+    steps:
+      - run: 
+          name: "Install AWS CLI"
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
 
 #   revert-migrations:
 #     description: Revert the last migration if successfully run in the current workflow.
@@ -171,24 +191,24 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment     
 
-  # configure-infrastructure:
-  #   docker:
-      # Docker image here that supports Ansible
-    # steps:
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       # Your code here
-      #       exit 1
-      # - run:
-      #     name: Configure server
-      #     command: |
-      #       # Your code here
-      #       exit 1
-      # Here's where you will add some code to rollback on failure      
+  configure-infrastructure:
+   docker:
+      - image: cimg/base:2022.04
+    steps:
+      - checkout
+      - awscli
+      - ansible
+      - add_ssh_keys:
+          fingerprints: ["2a:5d:14:4b:9c:f8:03:00:d6:73:bc:b1:a3:57:53:ac"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
+      - destroy-environment     
 
 #   run-migrations:
 #     docker:
