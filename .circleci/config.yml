@@ -310,7 +310,7 @@ jobs:
       # - destroy-environment
       - revert-migrations
 
- smoke-test:
+  smoke-test:
     docker:
       - image: cimg/base:2022.04
     steps:
