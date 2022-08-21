@@ -1,3 +1,7 @@
-url01  https://github.com/hadeer-bakr/cdond-c3-projectstarter
+url01 https://github.com/hadeer-bakr/cdond-c3-projectstarter
+url02 http://udapeople-175c3e0.s3-website-us-east-1.amazonaws.com/#/employees
+url03 https://d9ewgh8kqxf96.cloudfront.net
+url05 http://35.173.249.199:9090/targets
+
 
 
