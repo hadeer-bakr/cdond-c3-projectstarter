@@ -379,7 +379,7 @@ jobs:
         - image: cimg/base:2022.04 
       steps:
         - checkout
-        - install_awscli
+        - awscli
         - attach_workspace:
             at: ~/
         - run:
